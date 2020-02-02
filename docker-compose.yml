@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  static1:
+    image: nginx
+    volumes:
+      - ./sites/hello:/usr/share/nginx/html:ro
+    networks:
+      - webnet
+  lb:
+    image: haproxy
+    ports:
+      - "8880:80"
+    volumes:
+      - ./configs/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - webnet
+networks:
+  webnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.221.16/28
+
+  
